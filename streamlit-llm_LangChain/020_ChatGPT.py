@@ -1,3 +1,6 @@
+#---------------------------------------------------------
+# 060_langgraph_chatbot.ipynb 의 web 구현
+#---------------------------------------------------------
 # .env 파일에서 환경 변수를 읽어옵니다.
 from dotenv import load_dotenv, find_dotenv
 _ = load_dotenv(find_dotenv())
@@ -43,12 +46,11 @@ if "app" not in st.session_state:
     def call_model(state: MessagesState):
         response = llm.invoke(state["messages"])
         # 모델의 응답을 메시지 리스트에 추가
-        state["messages"].append(AIMessage(content=response.content))
-        return {"messages": state["messages"]}
+        return {"messages": response}
 
     # 3) 노드 및 엣지 연결
-    workflow.add_node("model", call_model)
     workflow.add_edge(START, "model")
+    workflow.add_node("model", call_model)
 
     # 4) MemorySaver를 사용해 대화 상태를 메모리에 저장/불러오기
     memory = MemorySaver()
