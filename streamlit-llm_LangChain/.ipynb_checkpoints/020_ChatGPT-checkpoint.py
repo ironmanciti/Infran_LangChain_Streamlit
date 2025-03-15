@@ -49,8 +49,8 @@ if "app" not in st.session_state:
         return {"messages": response}
 
     # 3) 노드 및 엣지 연결
-    workflow.add_node("model", call_model)
     workflow.add_edge(START, "model")
+    workflow.add_node("model", call_model)
 
     # 4) MemorySaver를 사용해 대화 상태를 메모리에 저장/불러오기
     memory = MemorySaver()
@@ -107,7 +107,6 @@ if summaries_button:
 
 # ---------------------------------------------------------------------------------
 # 메인 영역: 입력 폼 및 모델 호출
-# clear_on_submit=True : 폼이 제출될 때 입력 필드 자동 초기화
 # ---------------------------------------------------------------------------------
 with st.form(key='my_form', clear_on_submit=True):
     user_input = st.text_area("질문을 입력하세요:", key='input', height=100)
@@ -119,7 +118,7 @@ with st.form(key='my_form', clear_on_submit=True):
         
         # LangGraph 앱을 호출해 AI 응답 생성
         output = st.session_state.app.invoke(
-            {"messages": user_input},
+            {"messages": st.session_state.messages},
             config={"configurable": {"thread_id": "chat1"}}
         )
         
@@ -138,7 +137,6 @@ if st.session_state.messages:
 
 # ---------------------------------------------------------------------------------
 # 그 외의 대화 이력(마지막 메시지 제외)을 아래에서 순서대로 표시
-# is_user=True : 사용자가 입력한 메세지
 # ---------------------------------------------------------------------------------
 st.subheader("이전 대화 이력")
 for idx, msg in enumerate(st.session_state.messages):  # 맨 마지막 AIMessage는 제외

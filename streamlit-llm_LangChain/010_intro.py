@@ -20,7 +20,7 @@ st.header("LangChain Demo")
 
 # 사용자 입력을 받는 함수입니다.
 def get_text():
-    input_text = st.text_input("You: ", key="input", on_change=on_submit)
+    input_text = st.text_input("사용자: ", key="input", on_change=on_submit)
     return input_text
 
 # Submit 동작을 처리하는 콜백 함수입니다.

@@ -2,11 +2,17 @@
 from dotenv import load_dotenv, find_dotenv
 _ = load_dotenv(find_dotenv())
 
+
 import streamlit as st
 from langchain_core.prompts import FewShotPromptTemplate
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 from langchain_core.example_selectors import LengthBasedExampleSelector
+
+# OpenAI LLM 생성 함수
+# max_tokens 매개변수를 사용해 최대 응답 길이를 설정합니다.
+def create_llm(max_tokens):
+    return ChatOpenAI(model="gpt-4o-mini", max_tokens=max_tokens)
 
 # LLM 응답 생성 함수
 # 사용자 입력과 선택한 지역 사투리를 바탕으로 LLM 응답을 생성합니다.
@@ -120,9 +126,9 @@ def getLLMResponse(user_input, home_option, max_tokens):
         input_variables=["user_input", "home_option"],
         example_separator="\n"
     )
-    
-    # max_tokens 매개변수를 사용해 최대 응답 길이를 설정합니다.
-    llm =  ChatOpenAI(model="gpt-4o-mini", max_tokens=max_tokens)
+
+    # LLM 생성 (max_tokens 적용)
+    llm = create_llm(max_tokens)
 
     # LLM 응답 생성
     response = llm(new_prompt_template.format(user_input=user_input, home_option=home_option))
@@ -134,7 +140,7 @@ st.set_page_config(
     page_title="사투리 출력기",
     page_icon="🧊",
     layout="centered",
-    initial_sidebar_state="collapsed"  # 사이드바 숨김
+    initial_sidebar_state="collapsed"
 )
 
 # 웹 페이지 제목 설정

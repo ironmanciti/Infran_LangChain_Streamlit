@@ -9,7 +9,7 @@ from langchain_community.document_loaders import CSVLoader
 import pandas as pd
 
 # Streamlit 페이지 설정
-st.set_page_config(page_title="Educate Kids")
+st.set_page_config(page_title="Educate Kids", page_icon=":robot_face:")
 
 # 웹 페이지 헤더
 st.header("영어 단어 하나를 입력하시면 비슷한 단어들을 골라 드리겠습니다.")
